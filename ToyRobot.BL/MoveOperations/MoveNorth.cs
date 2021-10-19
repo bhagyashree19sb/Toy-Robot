@@ -4,14 +4,14 @@ using System.Text;
 
 namespace ToyRobot.BL.MoveOperations
 {
-    public class West : IMoveDirection
+    public class MoveNorth: IMove
     {
         public void Move(IToyRobot robot)
         {
-            // Check if move to West will cause the robot to fall
-            if (robot.PositionX - 1 >= 0)
+            // Check if move to North will cause the robot to fall
+            if (robot.PositionY + 1 < robot.MaxNorth)
             {
-                --robot.PositionX;
+                ++robot.PositionY;
             }
 
             // Else do not move

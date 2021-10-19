@@ -20,6 +20,8 @@ namespace ConsoleUI
                 try
                 {
                     var result = toyRobot.ExecuteCommand(command);
+                    
+                    // Display result if any
                     if (!string.IsNullOrEmpty(result))
                     {
                         Console.WriteLine(result);

@@ -9,19 +9,25 @@ namespace ToyRobot.BL.Commands
     {
         private bool ValidateRequiredCommandInput(IToyRobot robot, string[] commandArgs)
         {
+            // Validate number of inputs
+            if (commandArgs.Length != 2)
+            {
+                return false;
+            }
+
             // If robot is already placed on the table, then the existing direction can be used
+            string[] placeArgs = commandArgs[1].Split(",");
             if (robot.IsRobotPlacedOnTheTable())
             {
-                // Validate number of inputs
-                if (commandArgs.Length != 3 && commandArgs.Length != 4)
+                if (placeArgs.Length != 2 && placeArgs.Length != 3)
                 {
                     return false;
                 }
-            }
+            }            
             else
             {
                 // Validate number of inputs
-                if (commandArgs.Length != 4)
+                if (placeArgs.Length != 3)
                 {
                     return false;
                 }
@@ -42,7 +48,13 @@ namespace ToyRobot.BL.Commands
 
         public bool ValidateDirection(string direction, out DirectionEnum directionEnum)
         {
-            return Enum.TryParse(direction, true, out directionEnum);
+            // Enum parse passes number inputs
+            if (Enum.TryParse(direction, true, out directionEnum))
+            {
+                return !int.TryParse(direction, out int enumValue);
+            }
+
+            return false;
         }
 
 
@@ -57,13 +69,15 @@ namespace ToyRobot.BL.Commands
                 throw new Exception("Insufficient inputs. Please provide the initial coordinates and the direction.");
             }
 
+            string[] placeArgs = commandArgs[1].Split(",");
+
             // validate cooridnate values
-            if(!ValidateXCoordinate(commandArgs[1], out int x))
+            if(!ValidateXCoordinate(placeArgs[0], out int x))
             {
                 throw new Exception("Invalid X coordinate.");
             }
 
-            if (!ValidateYCoordinate(commandArgs[2], out int y))
+            if (!ValidateYCoordinate(placeArgs[1], out int y))
             {
                 throw new Exception("Invalid Y coordinate.");
             }
@@ -76,9 +90,9 @@ namespace ToyRobot.BL.Commands
             }
 
             // validate direction when provided
-            if (commandArgs.Length == 4)
+            if (placeArgs.Length == 3)
             {
-                if (!ValidateDirection(commandArgs[3], out DirectionEnum direction))
+                if (!ValidateDirection(placeArgs[2], out DirectionEnum direction))
                 {
                     throw new Exception("Invalid direction.");
                 }

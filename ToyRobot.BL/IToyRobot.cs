@@ -12,7 +12,7 @@ namespace ToyRobot.BL
         int MaxNorth { get; }
         int PositionX { get; set; }
         int PositionY { get; set; }
-        DirectionEnum Direction { get; set; }
+        DirectionEnum? Direction { get; set; }
         bool IsRobotPlacedOnTheTable();
         string ExecuteCommand(string command);
         void MoveDirection();

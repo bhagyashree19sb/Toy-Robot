@@ -10,7 +10,7 @@ namespace ToyRobot.BL
         public int MaxNorth { get; }
         public int PositionX { get; set; } = -1;
         public int PositionY { get; set; } = -1;
-        public DirectionEnum Direction { get; set; }
+        public DirectionEnum? Direction { get; set; }
 
         // Initializes table space
         public ToyRobot(int maxEast, int maxNorth)
@@ -32,25 +32,25 @@ namespace ToyRobot.BL
             string[] commandArgs = command.Split(" ");
 
             // Check if command is entered
-            if (commandArgs.Length == 0)
+            if (commandArgs.Length == 0 || string.IsNullOrEmpty(command))
             {
                 return null;
             }
 
             // Check if command is valid
-            if (!Configs.RobotOperations.ContainsKey(commandArgs[0]))
+            if (!RegistryLookup.Commands.ContainsKey(commandArgs[0]))
             {
                 throw new InvalidOperationException("Invalid command");
             }
 
             // Get the command instance from dictionary
-            var operation = Configs.RobotOperations[commandArgs[0]];
+            var operation = RegistryLookup.Commands[commandArgs[0]];
             return operation.Execute(this, command);
         }
 
         public void MoveDirection()
         {
-            var direction = Configs.MoveDirections[Direction];
+            var direction = RegistryLookup.MoveInTheDirection[Direction.Value];
             direction.Move(this);
         }
     }

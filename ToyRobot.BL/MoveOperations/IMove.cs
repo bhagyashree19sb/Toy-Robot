@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ToyRobot.BL.MoveOperations
 {
-    public interface IMoveDirection
+    public interface IMove
     {
         void Move(IToyRobot robot);
     }
